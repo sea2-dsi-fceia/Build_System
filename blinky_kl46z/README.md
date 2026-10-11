@@ -70,7 +70,7 @@ arm-none-eabi-objcopy -O binary tmp/blinky.elf tmp/blinky.bin
 | `tmp/main.i` | Ya no hay `#include` ni `#define`: el preprocesador los reemplazó (unas 100 líneas). |
 | `tmp/main.s` | El assembler Thumb del Cortex-M0+. Buscar `main:`. |
 | `tmp/main.o` | `arm-none-eabi-nm tmp/main.o`: los símbolos todavía no tienen dirección (todos en `00000000`). |
-| `tmp/blinky.elf` | `arm-none-eabi-nm -n tmp/blinky.elf`: ahora sí, `main` en `0x00000410`, `demora_ciclos` en `0x1FFFE000`. |
+| `tmp/blinky.elf` | `arm-none-eabi-nm -n tmp/blinky.elf`: ahora sí hay direcciones. `funcion_no_usada` en `0x00000410`, `main` en `0x0000041C` y `demora_ciclos` en `0x1FFFE000`. Como acá no usamos `--gc-sections`, la función que nadie llama sigue en el binario (con `make` desaparece y `main` queda en `0x00000410`). |
 
 **Probar:** sacar `-nostdlib` del comando de link. Falla con `undefined reference to '__bss_start__'`: entra el startup de newlib (`crt0`), que espera símbolos que nuestro linker script no define.
 
